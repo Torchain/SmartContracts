@@ -5,17 +5,21 @@ interface token {
     function burn(uint256 _value) returns (bool);
     function balanceOf(address _address) returns (uint256);
 }
-contract owned {
-    address public owner;
+contract owned { //Contract used to only allow the owner to call some functions
+	address public owner;
 
-    function owned() public {
-        owner = msg.sender;
-    }
+	function owned() public {
+	owner = msg.sender;
+	}
 
-    modifier onlyOwner {
-        require(msg.sender == owner);
-        _;
-    }
+	modifier onlyOwner {
+	require(msg.sender == owner);
+	_;
+	}
+
+	function transferOwnership(address newOwner) onlyOwner public {
+	owner = newOwner;
+	}
 }
 
 contract SafeMath {
@@ -63,14 +67,14 @@ contract Crowdsale is owned, SafeMath {
      * Setup the owner
      */
     function Crowdsale( ) {
-        beneficiary = 0x071ED6F131Fb63958504eb3ebdeE9aeD07cF9187;
-        rate = 80000; // 8.000.000 TORC/Ether 
+        beneficiary = 0xe579891b98a3f58e26c4b2edb54e22250899363c;
+        rate = 250000; // 25.000.000 TORC/Ether 
         tokenDecimals=8;
-        fundingGoal = 2500000000 * (10 ** tokenDecimals); 
-        start = 1536537600; //      
-        deadline = 1539129600; //    
-        bonusEndDate =1537156800;
-        tokenReward = token(0x07c3a656a937d6890320937914e8bb5e7cfa456d); //Token address. Modify by the current token address
+        fundingGoal = 7500000000 * (10 ** tokenDecimals); 
+        start = 1536688800; //      
+        deadline = 1539356400; //    
+        bonusEndDate =1539356400;
+        tokenReward = token(0x2DC5b9F85a5EcCC24A3abd396F9d0c43dF3D284c); //Token address. Modify by the current token address
     }    
 
     /**
@@ -101,10 +105,10 @@ contract Crowdsale is owned, SafeMath {
         numTokens = safeMul(_value,rate)/(10 ** tokenDecimals); //Number of tokens to give is equal to the amount received by the rate 
         
         if(now <= bonusEndDate){
-            if(_value>= 1 ether && _value< 5 * 1 ether){ // +15% tokens
-                numTokens += safeMul(numTokens,15)/100;
-            }else if(_value>=5 * 1 ether){              // +35% tokens
-                numTokens += safeMul(numTokens,35)/100;
+            if(_value>= 0.5 ether && _value< 5 * 1 ether){ // +10% tokens
+                numTokens += safeMul(numTokens,10)/100;
+            }else if(_value>=1 * 1 ether){              // +20% tokens
+                numTokens += safeMul(numTokens,20)/100;
             }
         }
 
