@@ -143,15 +143,15 @@ contract TokenERC20 {
 }
 
 /******************************************/
-/*       TORCToken STARTS HERE       */
+/*       TOCHToken STARTS HERE       */
 /******************************************/
 
-contract TORCToken is owned, TokenERC20  {
+contract TOCHToken is owned, TokenERC20  {
 
 	//Modify these variables
 	uint256 _initialSupply=10000000000; 
 	string _tokenName="Torchain";
-	string _tokenSymbol="TORC";
+	string _tokenSymbol="TOCH";
 	address public lockedWallet = 0x731b7Ee0f5122535f7dA63887d78E0C202f6a082;
 	uint256 public startTime;
 
@@ -161,7 +161,7 @@ contract TORCToken is owned, TokenERC20  {
 	event FrozenFunds(address target, bool frozen);
 
 	/* Initializes contract with initial supply tokens to the creator of the contract */
-	function TORCToken( ) TokenERC20(_initialSupply, _tokenName, _tokenSymbol) public {
+	function TOCHToken( ) TokenERC20(_initialSupply, _tokenName, _tokenSymbol) public {
 
 		startTime = now;
 
@@ -184,7 +184,7 @@ contract TORCToken is owned, TokenERC20  {
 	function checkLockedBalance(address wallet, uint256 _value) internal returns (bool){
 		if(wallet==lockedWallet){
 			
-			if(now<startTime + 365 * 1 days){ //15% tokens locked first year
+			if(now<startTime + 365 * 1 seconds){ 
 				return balanceOf[lockedWallet].sub(_value)>=totalSupply.mul(15).div(100)? true : false;
 			}else{ 
 				return true;
